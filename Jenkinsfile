@@ -10,7 +10,7 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t balachandravk/php:v101 .'
+                    sh 'docker build -t balachandravk/php:v201 .'
                     sh 'docker images'
                 }
             }
@@ -19,7 +19,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh 'docker push balachandravk/php:v101'
+                    sh 'docker push balachandravk/php:v201'
                 }
             }
         }
@@ -28,12 +28,12 @@ pipeline {
             steps {
                script {
                    def dockerrm = 'sudo docker rm -f My-first-containe221 || true'
-                    def dockerCmd = 'sudo docker run -itd --name My-first-containe221 -p 8082:80 balachandravk/php:v101'
-                    sshagent(['sshkey']) {
+                    def dockerCmd = 'sudo docker run -itd --name My-first-containe221 -p 8082:80 balachandravk/php:v201'
+                    sshagent(['sshkey-pwd']) {
                         //chnage the private ip in below code
-                        // sh "docker run -itd --name My-first-containe211 -p 8082:80 balachandravk/php:v101"
-                         sh "ssh -o StrictHostKeyChecking=no ubuntu@3.111.35.82 ${dockerrm}"
-                         sh "ssh -o StrictHostKeyChecking=no ubuntu@3.111.35.82 ${dockerCmd}"
+                        // sh "docker run -itd --name My-first-containe211 -p 8085:80 balachandravk/php:v101"
+                         sh "ssh -o StrictHostKeyChecking=no ubuntu@3.110.174.241 ${dockerrm}"
+                         sh "ssh -o StrictHostKeyChecking=no ubuntu@3.110.174.241 ${dockerCmd}"
                     }
                 }
             }
